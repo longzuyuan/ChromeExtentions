@@ -1,0 +1,25 @@
+﻿{
+	"manifest_version": 2,
+	"name": "深圳散学驾照辅助预约插件V20140219",
+	"version": "1.0.0",
+	"description": "深圳散学驾照最难的是什么？约考！本插件的目的就是帮助广大散学用户大幅提高约考成功率！",
+	"icons": 
+  { 
+    "16": "driving_16.png",
+    "48": "driving_48.png"
+  }, 
+	"background": { "scripts": ["jquery.min.js", "background.js"] },
+	"permissions": ["tabs"],
+	"page_action": {
+		"default_icon": {
+			"19": "driving_19.png",
+			"38": "driving_38.png"
+		},
+		"default_title": "深圳散学驾照辅助预约插件V20140219",
+		"default_popup": "popup.html"
+	},
+	"content_scripts":[{
+		"matches":["http://cgs.stc.gov.cn/*", "http://cgs1.stc.gov.cn/*"],
+		"js":["jquery.min.js", "content_script.js"]
+	}]
+}
