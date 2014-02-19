@@ -25,7 +25,7 @@ if(url.indexOf("Msg.aspx") > 5) { //提示页面
 		$("#type").val("dl");
 		$("#form1").submit();
 	});
-} else if(url == "http://cgs.stc.gov.cn/" || url == "http://cgs1.stc.gov.cn/") {
+} else if(url == "http://cgs.stc.gov.cn/" || url == "http://cgs1.stc.gov.cn" || url == "http://cgs1.stc.gov.cn/index.aspx") {
 	setText("<a style='color:red;font-size:40px;text-decoration:underline' href='http://cgs1.stc.gov.cn/SanXueYueKao.aspx'>点击进入散学登录</a>");
 } else if(url == "http://cgs1.stc.gov.cn/frame1.htm") {//登录后的主页面
 	
