@@ -59,18 +59,29 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 	}
 } else if(url.indexOf("Exam1_Sanxue.aspx") > 5) { //科目一预约
 	addTimer();
+	$("#HiddenFieldshift_id").attr('type','text');
+	$("#HiddenFieldshift_no").attr('type','text');
+	$("#HiddenFieldshift_id").before('场次ID:');
+	$("#HiddenFieldshift_no").before('场次NO:');
+	$("#HiddenFieldshift_no").after('<input type="button" value="改下一场" id="changeToNext2"/>');
+	$("#changeToNext2").click(function(){
+		fChangeToNext2();
+	});
 	if($("#LabelAllowNum").text().substring(1) == '/0') {
 		setText("该场次已满，20秒后请手动重新打开页面！");
-		return;
-	}
-	autoT = setTimeout("submitExam1()",20000);
-	setText("请手动输验证码，20秒后自动提交。<input value='取消自动' type='button' id='cancelSubmit'/>");
-	$("#cancelSubmit").click(function(){
-		clearTimeout(autoT);
-		setText("请手动输验证码，20秒后手动点‘确定预约’按钮！");
+		//return;
+	} else {
+		setText("请超快速输验证码然后提交。");
+		//autoT = setTimeout("submitExam1()",20000);
+		//setText("请手动输验证码，20秒后自动提交。<input value='取消自动' type='button' id='cancelSubmit'/>");
+		//$("#cancelSubmit").click(function(){
+		//	clearTimeout(autoT);
+		//	setText("请手动输验证码，20秒后手动点‘确定预约’按钮！");
+		//	$("#txtVail").focus();
+		//});
 		$("#txtVail").focus();
-	});
-	$("#txtVail").focus();
+	}
+	addPlayNoInfo1();
 } else if(url.indexOf("Exam2_Sanxue.aspx") > 5) { //科目二预约
 	addTimer();
 	$("#HiddenFieldshift_id").attr('type','text');
@@ -85,30 +96,41 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 		setText("该场次已满，20秒后请手动重新打开页面或在下方修改场次！");
 		//return;
 	} else {
-		autoT = setTimeout("submitExam1()",20000);
-		setText("请手动输验证码，20秒后自动提交。<input value='取消自动' type='button' id='cancelSubmit'/>");
-		$("#cancelSubmit").click(function(){
-			clearTimeout(autoT);
-			setText("请手动输验证码，20秒后手动点‘确定预约’按钮！");
-			$("#txtVail").focus();
-		});
+		//autoT = setTimeout("submitExam1()",20000);
+		setText("请超快速输验证码然后提交。");
+		//$("#cancelSubmit").click(function(){
+		//	clearTimeout(autoT);
+		//	setText("请手动输验证码，20秒后手动点‘确定预约’按钮！");
+		//	$("#txtVail").focus();
+		//});
 		$("#txtVail").focus();
 	}
-	addPlayNoInfo();
+	addPlayNoInfo2();
 } else if(url.indexOf("Exam3_Sanxue.aspx") > 5) { //科目三预约
 	addTimer();
+	$("#HiddenFieldshift_id").attr('type','text');
+	$("#HiddenFieldshift_no").attr('type','text');
+	$("#HiddenFieldshift_id").before('场次ID:');
+	$("#HiddenFieldshift_no").before('场次NO:');
+	$("#HiddenFieldshift_no").after('<input type="button" value="改下一场" id="changeToNext2"/>');
+	$("#changeToNext2").click(function(){
+		fChangeToNext2();
+	});
 	if($("#LabelAllowNum").text().substring(1) == '/0') {
 		setText("该场次已满，20秒后请手动重新打开页面！");
-		return;
-	}
-	autoT = setTimeout("submitExam1()",20000);
-	setText("请手动输验证码，20秒后自动提交。<input value='取消自动' type='button' id='cancelSubmit'/>");
-	$("#cancelSubmit").click(function(){
-		clearTimeout(autoT);
-		setText("请手动输验证码，20秒后手动点‘确定预约’按钮！");
+		//return;
+	} else {
+		setText("请超快速输验证码然后提交。");
+		//autoT = setTimeout("submitExam1()",20000);
+		//setText("请手动输验证码，20秒后自动提交。<input value='取消自动' type='button' id='cancelSubmit'/>");
+		//$("#cancelSubmit").click(function(){
+		//	clearTimeout(autoT);
+		//	setText("请手动输验证码，20秒后手动点‘确定预约’按钮！");
+		//	$("#txtVail").focus();
+		//});
 		$("#txtVail").focus();
-	});
-	$("#txtVail").focus();
+	}
+	addPlayNoInfo3();
 } else if(url.indexOf("cgs1.stc.gov.cn/") > 0) { //其它页面
 	addTimer();
 }
@@ -117,12 +139,14 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 function fChangeToNext2() {
 	var i = parseInt($("#HiddenFieldshift_id").val());
 	var n = parseInt($("#HiddenFieldshift_no").val());
-	if(i == 175563) {
-		alert("没有下场了，下次再试吧！"); return;
-	}
+	//if(i == 175563) {
+	//	alert("没有下场了，下次再试吧！"); return;
+	//}
 	i = i+1;
 	n = n+1;
-	if(n == 29009) n = 29001;
+	if(n == 29009) n = 29001; //科目二
+	if(n == 28985) n = 28981; //科目一
+	if(n == 34153) n = 34141; //科目三
 	$("#HiddenFieldshift_id").val(i);
 	$("#HiddenFieldshift_no").val(n);
 }
@@ -150,6 +174,45 @@ function loadAgain() {
 	handleSingleMenu($("td#item2", nav));
 	handleSingleMenu($("td#item0", nav));
 	handleSingleMenu($("td#item100", nav));
+	
+	var mainFrame = window.frames['mainframe'].document;
+	
+	addTimer2(mainFrame);
+	$("body", mainFrame).prepend("<div id='info_text' style='color:red;font-size:25px;padding:20px;height:90px;position:fixed;top:0;left:90px'></div>");
+	var txt = $("#form1", mainFrame).text(); var ifE=0;
+	if(txt.indexOf("没有任何一个科目") > 1) {$("#info_text", mainFrame).append("<br/><span style='background-color: #ff0;'>暂时不能约考！</span>");ifE=1;}
+	else if(txt.indexOf("科目一") > 1) $("#info_text", mainFrame).append("<br/><span style='background-color: #ff0;'>可约科目一！</span>");
+	else if(txt.indexOf("科目二") > 1) $("#info_text", mainFrame).append("<br/><span style='background-color: #ff0;'>可约科目二！</span>");
+	else if(txt.indexOf("科目三") > 1) $("#info_text", mainFrame).append("<br/><span style='background-color: #ff0;'>可约科目三！</span>");
+	if(ifE==0) {
+		$("#info_text", mainFrame).prepend("19秒后<span id='auto_m'>将自动</span>打开预约界面<input value='取消自动' type='button' id='cancelSubmit'/>，然后请在1秒内快速填完验证码然后提交！<br/>"
+								+ "<a id='l_exam1' style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/Exam1_Sanxue.aspx'>约科一</a>"
+								+ "<a id='l_exam2' style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/Exam2_Sanxue.aspx'>约科二</a>"
+								+ "<a id='l_exam3' style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/Exam3_Sanxue.aspx'>约科三</a>"
+								+ "<a style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/TestOrderMonthsInfo_Sanxue.aspx'>预约情况</a>");
+		var autoO = setTimeout("openExamPage()",18500);
+		$("#cancelSubmit", mainFrame).click(function(){
+			clearTimeout(autoO);
+			$(this).hide();
+			$("#info_text #auto_m", mainFrame).text("请手动");
+		});
+	} else {
+		$("#info_text", mainFrame).prepend("没有约考资格！<br/>"
+								+ "<a id='l_exam1' style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/Exam1_Sanxue.aspx'>约科一</a>"
+								+ "<a id='l_exam2' style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/Exam2_Sanxue.aspx'>约科二</a>"
+								+ "<a id='l_exam3' style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/Exam3_Sanxue.aspx'>约科三</a>"
+								+ "<a style='color:blue;font-size:16px;text-decoration:underline;margin-right:10px' target='_blank' href='http://cgs1.stc.gov.cn/TestOrderMonthsInfo_Sanxue.aspx'>预约情况</a>");
+	}
+}
+function openExamPage() {
+	var mainFrame = window.frames['mainframe'].document;
+	var txt = $("#info_text span:last", mainFrame).text();
+	if(txt.indexOf("科目一") > 1) window.open("http://cgs1.stc.gov.cn/Exam1_Sanxue.aspx", "_blank");
+	else if(txt.indexOf("科目二") > 1) window.open("http://cgs1.stc.gov.cn/Exam2_Sanxue.aspx", "_blank");
+	else if(txt.indexOf("科目三") > 1) window.open("http://cgs1.stc.gov.cn/Exam3_Sanxue.aspx", "_blank");
+		
+	$("#info_text input:first", mainFrame).hide();
+	$("#info_text #auto_m", mainFrame).text("请手动");	
 }
 //使菜单正常显示
 function handleSingleMenu(m) {
@@ -212,6 +275,35 @@ function timedCount() {
 	}
 }
 
+var selector;
+//加入时钟DIV，默认20秒
+function addTimerDiv2() {
+	if(!$("#globle_timer", selector).attr('id'))
+		$("body", selector).prepend("<div id='globle_timer' style='color:green;font-size:50px;padding:20px;height:90px;position:fixed;top:0;left:0'>19</div>");
+}
+function setTimedCount2(t, selector) {
+	$("#globle_timer", selector).text(t);
+}
+//添加时钟，默认20秒
+function addTimer2(sel) {
+	selector = sel;
+	addTimerDiv2();
+	
+	setTimeout("timedCount2()",1000);
+}
+//时钟倒计时
+function timedCount2() {
+	var t = $("#globle_timer", selector).text();
+	if(!t) return;
+	else if(t>1) {
+		t = t-1;
+		$("#globle_timer", selector).text(t);
+		setTimeout("timedCount2()",1000);
+	} else if(t==1) {
+		$("#globle_timer", selector).text("GO");
+	}
+}
+
 //自动刷新
 function autoRefreshPage() {
 	setTimeout("refreshPage()",3000);
@@ -220,26 +312,39 @@ function refreshPage() {
 	location.reload();
 }
 
-function addPlayNoInfo() {
-	var t = '<br/><br/><div style="color:#666;">'+
-	'周一<i style="width:115px;display:inline-block;">:</i>|&nbsp;周二<i style="width:115px;display:inline-block;">:</i>|&nbsp;周三<br/>'+
-	'&nbsp;08点:&nbsp;175524&nbsp;29001&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;08点:&nbsp;175532&nbsp;29001&nbsp;&nbsp;|&nbsp;&nbsp;08点:&nbsp;175540&nbsp;29001<br/>'+
-	'&nbsp;09点:&nbsp;175525&nbsp;29002&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;09点:&nbsp;175533&nbsp;29002&nbsp;&nbsp;|&nbsp;&nbsp;09点:&nbsp;175541&nbsp;29002<br/>'+
-	'&nbsp;10点:&nbsp;175526&nbsp;29003&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;10点:&nbsp;175534&nbsp;29003&nbsp;&nbsp;|&nbsp;&nbsp;10点:&nbsp;175542&nbsp;29003<br/>'+
-	'&nbsp;11点:&nbsp;175527&nbsp;29004&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;11点:&nbsp;175535&nbsp;29004&nbsp;&nbsp;|&nbsp;&nbsp;11点:&nbsp;175543&nbsp;29004<br/>'+
-	'&nbsp;12点:&nbsp;175528&nbsp;29005&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;12点:&nbsp;175536&nbsp;29005&nbsp;&nbsp;|&nbsp;&nbsp;12点:&nbsp;175544&nbsp;29005<br/>'+
-	'&nbsp;13点:&nbsp;175529&nbsp;29006&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;13点:&nbsp;175537&nbsp;29006&nbsp;&nbsp;|&nbsp;&nbsp;13点:&nbsp;175545&nbsp;29006<br/>'+
-	'&nbsp;14点:&nbsp;175530&nbsp;29007&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;14点:&nbsp;175538&nbsp;29007&nbsp;&nbsp;|&nbsp;&nbsp;14点:&nbsp;175546&nbsp;29007<br/>'+
-	'&nbsp;15点:&nbsp;175531&nbsp;29008&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;15点:&nbsp;175539&nbsp;29008&nbsp;&nbsp;|&nbsp;&nbsp;15点:&nbsp;175547&nbsp;29008<br/>'+
-	'====================================================<br/>'+
-	'周四<i style="width:115px;display:inline-block;">:</i>|&nbsp;&nbsp;周五<br/>'+
-	'&nbsp;08点:&nbsp;175548&nbsp;29001&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;08点:&nbsp;175556&nbsp;29001<br/>'+
-	'&nbsp;09点:&nbsp;175549&nbsp;29002&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;09点:&nbsp;175557&nbsp;29002<br/>'+
-	'&nbsp;10点:&nbsp;175550&nbsp;29003&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;10点:&nbsp;175558&nbsp;29003<br/>'+
-	'&nbsp;11点:&nbsp;175551&nbsp;29004&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;11点:&nbsp;175559&nbsp;29004<br/>'+
-	'&nbsp;12点:&nbsp;175552&nbsp;29005&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;12点:&nbsp;175560&nbsp;29005<br/>'+
-	'&nbsp;13点:&nbsp;175553&nbsp;29006&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;13点:&nbsp;175561&nbsp;29006<br/>'+
-	'&nbsp;14点:&nbsp;175554&nbsp;29007&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;14点:&nbsp;175562&nbsp;29007<br/>'+
-	'&nbsp;15点:&nbsp;175555&nbsp;29008&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;15点:&nbsp;175563&nbsp;29008<br/></div>';
+function addPlayNoInfo1() {
+	var t = '<br/><br/><div style="color:#666;">场次ID逐场递增，场次NO如下：<br/>'+
+	'&nbsp;15点:&nbsp;28981<br/>'+
+	'&nbsp;16点:&nbsp;28982<br/>'+
+	'&nbsp;17点:&nbsp;28983<br/>'+
+	'&nbsp;18点:&nbsp;28984<br/></div>';
+	$('#form1').after(t);
+}
+function addPlayNoInfo2() {
+	var t = '<br/><br/><div style="color:#666;">场次ID逐场递增，场次NO如下：<br/>'+
+	'&nbsp;08点:&nbsp;29001<br/>'+
+	'&nbsp;09点:&nbsp;29002<br/>'+
+	'&nbsp;10点:&nbsp;29003<br/>'+
+	'&nbsp;11点:&nbsp;29004<br/>'+
+	'&nbsp;12点:&nbsp;29005<br/>'+
+	'&nbsp;13点:&nbsp;29006<br/>'+
+	'&nbsp;14点:&nbsp;29007<br/>'+
+	'&nbsp;15点:&nbsp;29008<br/></div>';
+	$('#form1').after(t);
+}
+function addPlayNoInfo3() {
+	var t = '<br/><br/><div style="color:#666;">场次ID逐场递增，场次NO如下：<br/>'+
+	'&nbsp;08点:&nbsp;34141<br/>'+
+	'&nbsp;09点:&nbsp;34142<br/>'+
+	'&nbsp;10点:&nbsp;34143<br/>'+
+	'&nbsp;11点:&nbsp;34144<br/>'+
+	'&nbsp;12点:&nbsp;34145<br/>'+
+	'&nbsp;13点:&nbsp;34146<br/>'+
+	'&nbsp;14点:&nbsp;34147<br/>'+
+	'&nbsp;15点:&nbsp;34148<br/>'+
+	'&nbsp;16点:&nbsp;34149<br/>'+
+	'&nbsp;17点:&nbsp;34150<br/>'+
+	'&nbsp;18点:&nbsp;34151<br/>'+
+	'&nbsp;19点:&nbsp;34152<br/></div>';
 	$('#form1').after(t);
 }
