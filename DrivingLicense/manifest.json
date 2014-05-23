@@ -19,7 +19,10 @@
 		"default_popup": "popup.html"
 	},
 	"content_scripts":[{
-		"matches":["http://cgs.stc.gov.cn/*", "http://cgs1.stc.gov.cn/*"],
+		"matches":["http://cgs.stc.gov.cn/*", "http://cgs1.stc.gov.cn/*", "http://app.stc.gov.cn/*"],
 		"js":["jquery.min.js", "content_script.js"]
-	}]
+	}],
+	"web_accessible_resources":[
+		"jquery.min.map"
+	]
 }

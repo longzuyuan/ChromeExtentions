@@ -11,7 +11,8 @@ function getDomainFromUrl(url){
 
 function checkForValidUrl(tabId, changeInfo, tab) {
      if(getDomainFromUrl(tab.url).toLowerCase()=="cgs1.stc.gov.cn" || 
-     		getDomainFromUrl(tab.url).toLowerCase()=="cgs.stc.gov.cn"){
+     		getDomainFromUrl(tab.url).toLowerCase()=="cgs.stc.gov.cn" || 
+     		getDomainFromUrl(tab.url).toLowerCase()=="app.stc.gov.cn:9090"){
           chrome.pageAction.show(tabId);
      }
 };

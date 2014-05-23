@@ -41,14 +41,29 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 } else if(url == "http://cgs1.stc.gov.cn/SanXueYueKao.aspx") { //登录页面
 	setText("点登录按钮，20秒内不要刷新，一天内不要尝试登录多个号！");
 	//去除提示框
-	var btn = $("#form1 input:first");
-	btn.attr('onclick','');
-	btn.click(function() {
+	//var btn = $("#form1 input:first");
+	//btn.unbind("click");
+	//btn.get(0)=function(){}
+	//btn.removeAttr('onclick','');
+	//btn.click(function() {
 		$("#type").val("dl");
 		$("#form1").submit();
-	});
+	//});
+} else if(url == "http://cgs1.stc.gov.cn/TestOrderMonthsInfo_Sanxue.aspx") { //查询界面
+	addTimer();
+	setTimedCount(10);
+	if($("#Button1").val()) setTimeout('$("#Button1").click()', 10000);
+	else setTimeout("toURL('TestOrderMonthsInfo_Sanxue.aspx')", 10000);
+} else if(url.indexOf("oauth/stc_auth") > 5) { //验证界面
+	if($("body").attr("id") == "t" || $("body").text() == "") { 
+		addTimer();
+		setText("验证失败！20秒后自动跳转刷新或点击<a style='color:blue;font-size:20px;text-decoration:underline' href='http://cgs1.stc.gov.cn/SanXueYueKao.aspx'>重新登录</a>");
+		setTimedCount(20);
+		setTimeout("toLogin()", 20000);
+	}
 } else if(url == "http://cgs.stc.gov.cn/" || url == "http://cgs1.stc.gov.cn/" || url == "http://cgs1.stc.gov.cn/index.aspx") {
 	setText("<a style='color:red;font-size:40px;text-decoration:underline' href='http://cgs1.stc.gov.cn/SanXueYueKao.aspx'>点击进入散学登录</a>");
+	if(url == "http://cgs.stc.gov.cn/") $("#ad").css('display', 'none');
 } else if(url.indexOf("CoutesyReminder.html") > 5) { //又一个提示页面
 	addTimer();
 	var tex = $("#lbltishi").text();
@@ -68,7 +83,7 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 		fChangeToNext2();
 	});
 	if($("#LabelAllowNum").text().substring(1) == '/0') {
-		setText("该场次已满，20秒后请手动重新打开页面！");
+		setText("该场次已满，请迅速手动重新打开页面！");
 		//return;
 	} else {
 		setText("请超快速输验证码然后提交。");
@@ -93,7 +108,7 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 		fChangeToNext2();
 	});
 	if($("#LabelAllowNum").text().substring(1) == '/0') {
-		setText("该场次已满，20秒后请手动重新打开页面或在下方修改场次！");
+		setText("该场次已满，请迅速手动重新打开页面或在下方修改场次！");
 		//return;
 	} else {
 		//autoT = setTimeout("submitExam1()",20000);
@@ -112,12 +127,16 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 	$("#HiddenFieldshift_no").attr('type','text');
 	$("#HiddenFieldshift_id").before('场次ID:');
 	$("#HiddenFieldshift_no").before('场次NO:');
+	$("#HiddenFieldshift_no").after('<input type="button" value="改下一天同场" id="changeToNext3"/>');
 	$("#HiddenFieldshift_no").after('<input type="button" value="改下一场" id="changeToNext2"/>');
 	$("#changeToNext2").click(function(){
 		fChangeToNext2();
 	});
+	$("#changeToNext3").click(function(){
+		fChangeToNext3();
+	});
 	if($("#LabelAllowNum").text().substring(1) == '/0') {
-		setText("该场次已满，20秒后请手动重新打开页面！");
+		setText("该场次已满，请迅速手动重新打开页面！");
 		//return;
 	} else {
 		setText("请超快速输验证码然后提交。");
@@ -131,6 +150,10 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 		$("#txtVail").focus();
 	}
 	addPlayNoInfo3();
+} else if(url.indexOf("dengjichenggongtishi.aspx") > 5) { //验证失败
+		addTimer();
+		setText("验证失败！20秒后自动跳转到登录界面或点击<a style='color:blue;font-size:20px;text-decoration:underline' href='http://cgs1.stc.gov.cn/SanXueYueKao.aspx'>重新登录</a>");
+		setTimeout("toLogin()", 20000);
 } else if(url.indexOf("cgs1.stc.gov.cn/") > 0) { //其它页面
 	addTimer();
 }
@@ -150,6 +173,20 @@ function fChangeToNext2() {
 	$("#HiddenFieldshift_id").val(i);
 	$("#HiddenFieldshift_no").val(n);
 }
+function fChangeToNext3() {
+	var i = parseInt($("#HiddenFieldshift_id").val());
+	//var n = parseInt($("#HiddenFieldshift_no").val());
+	//if(i == 175563) {
+	//	alert("没有下场了，下次再试吧！"); return;
+	//}
+	i = i+12;
+	//n = n;
+	//if(n == 29009) n = 29001; //科目二
+	//if(n == 28985) n = 28981; //科目一
+	//if(n == 34153) n = 34141; //科目三
+	$("#HiddenFieldshift_id").val(i);
+	//$("#HiddenFieldshift_no").val(n);
+}
 function submitExam1() {
 	$("#Button1").click();
 }
@@ -158,7 +195,7 @@ function submitExam1() {
 function loadAgain() {
 	var leftFrame = window.frames['leftmain'].document;
 	var nav = $("#navitable", leftFrame);
-	//alert(nav.attr("id"));
+	alert(nav.attr("id"));
 	if(nav.attr("id") != 'navitable') {
 		setTimeout("loadAgain()",500); return;
 	}
@@ -236,6 +273,10 @@ function toRemindPage() {
 //跳转到登录页面
 function toLogin() {
 	window.location.href = "http://cgs1.stc.gov.cn/SanXueYueKao.aspx";
+}
+//跳转到指定页面
+function toURL(url) {
+	window.location.href = "http://cgs1.stc.gov.cn/" + url;
 }
 
 //加入提示DIV
