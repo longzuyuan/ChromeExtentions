@@ -39,6 +39,12 @@ if(url == "http://cgs1.stc.gov.cn/frame1.htm") { //登录后的主页面
 	setTimedCount(3);
 	setTimeout("toLogin()",3000);
 } else if(url == "http://cgs1.stc.gov.cn/SanXueYueKao.aspx") { //登录页面
+	if($("h1").text().indexOf("Server is too busy") >=0) {
+	  addTimer();
+	  setTimedCount(5);
+		setTimeout("toLogin()", 5000);
+		return;
+	}
 	setText("点登录按钮，20秒内不要刷新，一天内不要尝试登录多个号！");
 	//去除提示框
 	//var btn = $("#form1 input:first");
@@ -193,9 +199,8 @@ function submitExam1() {
 
 //加载菜单
 function loadAgain() {
-	var leftFrame = window.frames['leftmain'].document;
+	var leftFrame = window.frames['leftmain'].contentDocument || window.frames["leftmain"].contentWindow.document;
 	var nav = $("#navitable", leftFrame);
-	alert(nav.attr("id"));
 	if(nav.attr("id") != 'navitable') {
 		setTimeout("loadAgain()",500); return;
 	}
@@ -212,7 +217,7 @@ function loadAgain() {
 	handleSingleMenu($("td#item0", nav));
 	handleSingleMenu($("td#item100", nav));
 	
-	var mainFrame = window.frames['mainframe'].document;
+	var mainFrame = window.frames['mainframe'].contentDocument || window.frames["leftmain"].contentWindow.document;
 	
 	addTimer2(mainFrame);
 	$("body", mainFrame).prepend("<div id='info_text' style='color:red;font-size:25px;padding:20px;height:90px;position:fixed;top:0;left:90px'></div>");
@@ -242,7 +247,7 @@ function loadAgain() {
 	}
 }
 function openExamPage() {
-	var mainFrame = window.frames['mainframe'].document;
+	var mainFrame = window.frames['mainframe'].contentDocument || window.frames["leftmain"].contentWindow.document;
 	var txt = $("#info_text span:last", mainFrame).text();
 	if(txt.indexOf("科目一") > 1) window.open("http://cgs1.stc.gov.cn/Exam1_Sanxue.aspx", "_blank");
 	else if(txt.indexOf("科目二") > 1) window.open("http://cgs1.stc.gov.cn/Exam2_Sanxue.aspx", "_blank");
